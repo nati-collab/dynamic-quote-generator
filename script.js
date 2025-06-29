@@ -8,29 +8,31 @@ let quotes = [
 // Populate category filter on page load
 document.addEventListener("DOMContentLoaded", () => {
   updateCategoryFilter();
-  showRandomQuote();
+  displayRandomQuote();
 
-  document.getElementById("newQuote").addEventListener("click", showRandomQuote);
+  document.getElementById("newQuote").addEventListener("click", displayRandomQuote);
 });
 
-// Show a random quote based on selected category
-function showRandomQuote() {
+// ✅ Renamed from showRandomQuote to displayRandomQuote
+function displayRandomQuote() {
   const selectedCategory = document.getElementById("categoryFilter").value;
   const filteredQuotes = selectedCategory === "all"
     ? quotes
     : quotes.filter(q => q.category.toLowerCase() === selectedCategory.toLowerCase());
 
+  const quoteDisplay = document.getElementById("quoteDisplay");
+
   if (filteredQuotes.length === 0) {
-    document.getElementById("quoteDisplay").textContent = "No quotes found for this category.";
+    quoteDisplay.textContent = "No quotes found for this category.";
     return;
   }
 
   const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
   const quote = filteredQuotes[randomIndex];
-  document.getElementById("quoteDisplay").textContent = `"${quote.text}" — [${quote.category}]`;
+  quoteDisplay.textContent = `"${quote.text}" — [${quote.category}]`;
 }
 
-// Add new quote from user input
+// ✅ Keep function name as 'addQuote' as required
 function addQuote() {
   const textInput = document.getElementById("newQuoteText");
   const categoryInput = document.getElementById("newQuoteCategory");
@@ -47,16 +49,14 @@ function addQuote() {
   textInput.value = "";
   categoryInput.value = "";
   updateCategoryFilter();
-
   alert("Quote added successfully!");
 }
 
-// Update category dropdown with unique values
+// Updates the category dropdown dynamically
 function updateCategoryFilter() {
   const select = document.getElementById("categoryFilter");
   const categories = Array.from(new Set(quotes.map(q => q.category)));
 
-  // Clear current options except "All"
   select.innerHTML = `<option value="all">All</option>`;
   categories.forEach(category => {
     const option = document.createElement("option");
